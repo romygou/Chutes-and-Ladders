@@ -1,27 +1,12 @@
 ---
-title: "Stats 102A - Homework 2 - Output File"
+title: "Chutes and Ladders"
 author: "Romy Gou"
 output: pdf_document
 ---
 
-Homework questions and prompts copyright Miles Chen, Do not post, share, or distribute without permission.
-
-To receive full credit the functions you write must pass all tests. We may conduct further tests that are not included on this page as well.
-
-# Academic Integrity Statement
-
-By including this statement, I, Romy Gou, declare that all of the work in this assignment is my own original work. At no time did I look at the code of other students nor did I search for code solutions online. I understand that plagiarism on any single part of this assignment will result in a 0 for the entire assignment and that I will be referred to the dean of students.
-
-
 ```{r, error = TRUE}
-source("102a_hw_02_script_Romy_Gou.R")  # edit with your file name
+source("Chutes_and_Ladders.R")
 ```
-
-\pagebreak
-
-# Part 1: Board representation
-
-Create a single list object called `board` where you store the features of the game board in R.
 
 ```{r, error = TRUE}
 board <- list(dim = c(10, 10),
@@ -29,21 +14,10 @@ board <- list(dim = c(10, 10),
               ladders = c(1, 38, 4, 14, 9, 31, 21, 42, 28, 84, 36, 44, 51, 67, 71, 91, 80, 100))
 ```
 
-\pagebreak
-
-# Part 2: Plot of Game board
-
 ```{r, error = TRUE}
-# par() should help the plot be more visible. you can adjust this as necessary
 par(mar = c(0, 0, 0, 0)) 
 show_board(board)
 ```
-
-\pagebreak
-
-# Part 3: Miniboards
-
-Create the `miniboard` objects and plots.
 
 ```{r, error = TRUE}
 miniboard1 <- list(dim = c(7, 6),
@@ -69,27 +43,18 @@ par(mar = c(0, 0, 0, 0))
 show_board(miniboard3)
 ```
 
-\pagebreak
-
-# Part 4: Verbose output of one single player game
-
 ```{r, error = TRUE}
 set.seed(5)
 play_solo(board, verbose = TRUE)
 ```
 
-\pagebreak
-
-# Part 5: Monte Carlo Simulation Study
+# Monte Carlo Simulation Study
 
 ```{r, error = TRUE, echo = TRUE, results='hide'}
 # run 10,000 games
 set.seed(5)
 MC_sim <- replicate(10000, play_solo(board, verbose = FALSE))
 ```
-
-
-- Create a histogram (breaks = 50) of the turns.
 
 ```{r}
 total_turns <- unlist(MC_sim[1, ])
@@ -99,56 +64,33 @@ turn_hist <- hist(total_turns,
                   breaks = 50)
 ```
 
-
-- Find the minimum number of turns. How many times out of 10,000 did a game finish with the minimum number of turns?
-
-### The minimum number of turns was 7. The game finished in 7 turns 10 times out of 10,000.
 ```{r}
 summary(total_turns)[1]
 freq_table <- table(total_turns)
 freq_table[1] #frequency for 7 turns
 ```
 
-- Find the maximum number of turns.
-
-### The maximum number of turns was 301.
 ```{r}
 summary(total_turns)[6]
 ```
 
-
-- What is the median number of turns?
-
-### The median number of turns was 32.
 ```{r}
 summary(total_turns)[3]
 ```
 
-- What is the mean number of turns?
-
-### The mean number of turns was 39.35.
 ```{r}
 summary(total_turns)[4]
 ```
 
-- What proportion of games take 100 or more turns to complete?
-
-### The proportion of games that take 100 or more turns to complete is 0.0329.
 ```{r}
 prop_table <- freq_table / sum(freq_table)
 sum(prop_table[-1:-93])
 ```
 
-- What proportion of games take 10 or fewer turns to complete?
-
-### The proportion of games that take 10 or fewer turns to complete is 0.0216.
 ```{r}
 sum(prop_table[1:4])
 ```
 
-- What proportion of games utilize ladder 9 (the shortcut to win on space 80)?
-
-### The proportion of games that utilize ladder 9 is 0.170.
 ```{r}
 total_ladder <- 0
 for (i in 1:10000) {
@@ -158,8 +100,6 @@ for (i in 1:10000) {
 
 total_ladder[9] / (sum(total_ladder) - total_ladder[9])
 ```
-
-- Create a barplot of the relative frequency of how often each chute is utilized.
 
 ```{r}
 total_chute <- 0
@@ -173,8 +113,6 @@ chute_plot <- barplot(total_chute,
                       xlab = "Chute number",
                       ylab = "Frequency")
 ```
-
-- Create a barplot of the relative frequency of how often each ladder is utilized.
 
 ```{r}
 ladder_plot <- barplot(total_ladder,
